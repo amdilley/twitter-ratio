@@ -1,14 +1,14 @@
 const puppeteer = require('puppeteer');
 const { URL } = require('url');
 
-const REPLY_SELECTOR = '.js-actionReply > .ProfileTweet-actionCount';
-const RETWEET_SELECTOR = '.js-actionRetweet > .ProfileTweet-actionCount';
-const FAVORITE_SELECTOR = '.js-actionFavorite > .ProfileTweet-actionCount';
+const REPLY_SELECTOR = '.js-actionReply > .ProfileTweet-actionCount > .ProfileTweet-actionCountForPresentation';
+const RETWEET_SELECTOR = '.js-actionRetweet > .ProfileTweet-actionCount > .ProfileTweet-actionCountForPresentation';
+const FAVORITE_SELECTOR = '.js-actionFavorite > .ProfileTweet-actionCount > .ProfileTweet-actionCountForPresentation';
 
 const sleep = ms => new Promise(res => setTimeout(res, ms));
 
 const getCount = async (page, selector) =>
-    await page.$eval(selector, el => Number(el.getAttribute('data-tweet-stat-count')));
+    await page.$eval(selector, el => Number(el.innerHTML));
 
 (async (url = process.argv[2]) => {
     const tweetURL = new URL(url);
