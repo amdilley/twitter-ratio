@@ -8,7 +8,9 @@ const FAVORITE_SELECTOR = '.js-actionFavorite > .ProfileTweet-actionCount > .Pro
 const sleep = ms => new Promise(res => setTimeout(res, ms));
 
 const getCount = async (page, selector) =>
-    await page.$eval(selector, el => Number(el.innerHTML));
+    await page.$eval(selector, el => 
+        Number(el.innerHTML) || Number(el.parentNode.getAttribute('data-tweet-stat-count'))
+    );
 
 (async (url = process.argv[2]) => {
     const tweetURL = new URL(url);
