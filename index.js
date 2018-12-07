@@ -4,7 +4,7 @@ const { URL } = require('url');
 
 const {
     PUSHBULLET_API_KEY,
-    PUSHBULLET_IPHONE_DEVICE_ID,
+    PUSHBULLET_DEVICE_ID,
 } = require('./pushbullet');
 
 const REPLY_SELECTOR = '.js-actionReply > .ProfileTweet-actionCount > .ProfileTweet-actionCountForPresentation';
@@ -53,7 +53,7 @@ const getCount = (page, selector) =>
     // PushBullet notification for iPhone
     if (process.argv[3] === 'push') {
         pusher.note(
-            PUSHBULLET_IPHONE_DEVICE_ID,
+            PUSHBULLET_DEVICE_ID,
             `💬${replies} 🔁${retweets} ❤️${favorites} ÷${ratio}`,
             `Tweet metrics for ${url}`,
         );
