@@ -9,6 +9,7 @@
   "author": "amdilley",
   "license": "ISC",
   "dependencies": {
-    "puppeteer": "^1.11.0"
+    "puppeteer": "^1.11.0",
+    "pushbullet": "^2.3.0"
   }
 }

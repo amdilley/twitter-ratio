@@ -1,9 +1,17 @@
 const puppeteer = require('puppeteer');
+const PushBullet = require('pushbullet');
 const { URL } = require('url');
+
+const {
+    PUSHBULLET_API_KEY,
+    PUSHBULLET_IPHONE_DEVICE_ID,
+} = require('./pushbullet');
 
 const REPLY_SELECTOR = '.js-actionReply > .ProfileTweet-actionCount > .ProfileTweet-actionCountForPresentation';
 const RETWEET_SELECTOR = '.js-actionRetweet > .ProfileTweet-actionCount > .ProfileTweet-actionCountForPresentation';
 const FAVORITE_SELECTOR = '.js-actionFavorite > .ProfileTweet-actionCount > .ProfileTweet-actionCountForPresentation';
+
+const pusher = new PushBullet(PUSHBULLET_API_KEY);
 
 const sleep = ms => new Promise(res => setTimeout(res, ms));
 
@@ -33,10 +41,23 @@ const getCount = (page, selector) =>
     
     const ratio = parseFloat(replies/favorites).toFixed(2);
 
-    console.log(`REPLIES:   ${replies}`);
-    console.log(`RETWEETS:  ${retweets}`);
-    console.log(`FAVORITES: ${favorites}`);
-    console.log(`RATIO:     ${ratio}`);
+    const textBody = [
+        `REPLIES:   ${replies}`,
+        `RETWEETS:  ${retweets}`,
+        `FAVORITES: ${favorites}`,
+        `RATIO:     ${ratio}`,
+    ].join('\n');
+
+    console.log(textBody);
+
+    // PushBullet notification for iPhone
+    if (process.argv[3] === 'push') {
+        pusher.note(
+            PUSHBULLET_IPHONE_DEVICE_ID,
+            `💬${replies} 🔁${retweets} ❤️${favorites} ÷${ratio}`,
+            `Tweet metrics for ${url}`,
+        );
+    }
 
     browser.close();
 })();
