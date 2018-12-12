@@ -1,2 +1,3 @@
 *.log
 pushbullet.js
+node_modules/
